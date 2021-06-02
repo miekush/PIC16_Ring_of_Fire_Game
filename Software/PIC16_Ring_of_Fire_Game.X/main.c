@@ -54,8 +54,8 @@ void main(void)
                 if(blinkCount > 250) //250 ms
                 {
                     //toggle active led
-                    PORTA ^= (ledReg & 0b000111)|((ledReg >> 5) & 0b010000);
-                    PORTC ^= ((ledReg >> 3) & 0b111111);
+                    PORTA ^= (ledReg & 0b000111)|((ledReg >> 4) & 0b110000);
+                    PORTC ^= ((ledReg >> 3) & 0b000011)|((ledReg >> 2) & 0b111000);
                     //reset counter
                     blinkCount = 0;
                 }
@@ -67,14 +67,15 @@ void main(void)
                     ledReg = ledReg << 1;
                     //reset register
                     if(ledReg > 0b1000000000) ledReg = 0b0000000001;
+                    /*
                     //write led pins
                     PORTA = (ledReg & 0b000111)|((ledReg >> 5) & 0b010000);
                     PORTC = ((ledReg >> 3) & 0b111111);
-                    /*
+                    */
                     //write led pins
-                    PORTA = (ledReg & 0b000111)|((ledReg >> 5) & 0b110000);
+                    PORTA = (ledReg & 0b000111)|((ledReg >> 4) & 0b110000);
                     PORTC = ((ledReg >> 3) & 0b000011)|((ledReg >> 2) & 0b111000);
-                     */
+                     
                     //reset counter
                     ledCount = 0;
                 }
@@ -87,8 +88,8 @@ void main(void)
                   speedReg |= 1 << i;
                 }
                 //write led pins
-                PORTA = (speedReg & 0b000111)|((speedReg >> 5) & 0b010000);
-                PORTC = ((speedReg >> 3) & 0b111111);
+                PORTA = (speedReg & 0b000111)|((speedReg >> 4) & 0b110000);
+                PORTC = ((speedReg >> 3) & 0b000011)|((speedReg >> 2) & 0b111000);
                 break;
             default:
                 break;
@@ -110,7 +111,7 @@ void buttonISR (void)
     //clear watchdog timer
     CLRWDT();
     //determine press duration
-    if(!RA5) //button pressed
+    if(!RC2) //button pressed
     {
         buttonCount = 0;
     }
